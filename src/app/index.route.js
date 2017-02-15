@@ -35,6 +35,13 @@
         controllerAs: '$ctr',
         data: {pageTitle: 'Search Image'}
       })
+      .state('login', {
+        url: "/login",
+        templateUrl: "app/login/login.html",
+        controller: 'loginController',
+        controllerAs: '$ctr',
+        data: {pageTitle: 'Login'}
+      })
   }
 
 })();

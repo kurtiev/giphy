@@ -57,6 +57,7 @@ input.ng-dirty.ng-invalid,
 tags-input.ng-invalid .tags {
   box-shadow: none;
 }
+
 .ng-submitted tags-input.ng-invalid .tags {
   background-color: #f78f9a;
   border-color: #e6868f;
@@ -65,6 +66,45 @@ tags-input.ng-invalid .tags {
 button.close {
   opacity: .5;
 }
+
 .close-span {
   font-size: 35px;
+}
+
+.admin-login {
+  color: #fff;
+  position: relative;
+  min-height: 100%;
+  padding-bottom: 50px;
+}
+
+.admin-login p.welcome {
+  font-size: 36px;
+  font-family: Montserrat-Bold, sans-serif;
+  margin: 80px 0;
+  /*font-weight: 700;*/
+}
+
+.admin-login p.info {
+  font-size: 12px;
+  font-family: "Montserrat Light", sans-serif;
+}
+
+.login-footer {
+  padding: 15px;
+  height: 50px;
+  position: absolute;
+  width: 100%;
+  max-width: 960px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-top: 1px solid #fff;
+  margin: 0 auto -50px;
+}
+
+.admin-login {
+  .form-control, .single-line {
+    background: #2f4050
+  }
 }

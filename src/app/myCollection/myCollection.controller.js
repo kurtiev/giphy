@@ -1,9 +1,12 @@
 (function () {
   'use strict';
 
-  var controller = function ($log, api, localStorageService, appConfig, image) {
+  var controller = function ($log, api, localStorageService, appConfig, image, auth, $state) {
 
-    $log.debug('myCollectionController');
+    if (!auth.authentication.isLogged) {
+      $state.go('login');
+      return;
+    }
 
     var that = this;
 
@@ -106,7 +109,7 @@
 
   };
 
-  controller.$inject = ['$log', 'api', 'localStorageService', 'appConfig', 'image'];
+  controller.$inject = ['$log', 'api', 'localStorageService', 'appConfig', 'image', 'auth', '$state'];
 
 
   angular.module('inspinia')
