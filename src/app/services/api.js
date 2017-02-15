@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var api = function ($http, appConfig) {
+  var api = function ($http, appConfig, Upload) {
 
     var giphyKey = appConfig.giphyPublicBetaKey;
     var apiUrl = appConfig.apiUrl;
@@ -38,14 +38,25 @@
     };
 
     factory.uploadFile = function (requestModel) {
-      return $http.post('http://upload.giphy.com/v1/gifs', requestModel)
+     return Upload.upload({
+        url: 'http://upload.giphy.com/v1/gifs',
+        data: requestModel
+      });
+       // .then(function (resp) {
+       //  console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+      // }, function (resp) {
+      //   console.log('Error status: ' + resp.status);
+      // }, function (evt) {
+      //   var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+      //   console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+      // });
     };
 
     return factory;
 
   };
 
-  api.$inject = ['$http', 'appConfig'];
+  api.$inject = ['$http', 'appConfig', 'Upload'];
 
   angular.module('inspinia')
     .factory('api', api);

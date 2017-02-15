@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var controller = function ($log, api, localStorageService, appConfig) {
+  var controller = function ($log, api, localStorageService, appConfig, image) {
 
     var that = this;
 
@@ -14,6 +14,8 @@
     that.images = [];
 
     that.inRequest = false;
+
+    that.imageService = image;
 
     var _collectionStoragePrefix = appConfig.myCollectionStorage;
 
@@ -60,21 +62,7 @@
     that.addImageToMyCollection = function (image) {
 
       var id = image.id;
-      var isNewImage = true;
-
-      _myCollectionIds = localStorageService.get(_collectionStoragePrefix) || {ids: []};
-
-      for (var i = 0; _myCollectionIds.ids.length > i; i++) {
-        if (_myCollectionIds.ids[i] == id) {
-          return
-        }
-      }
-
-      if (!isNewImage) return;
-
-      _myCollectionIds.ids.push(id);
-
-      localStorageService.set(_collectionStoragePrefix, _myCollectionIds);
+      that.imageService.addImageId(id);
 
     };
 
@@ -86,16 +74,7 @@
 
       var id = image.id;
 
-      _myCollectionIds = localStorageService.get(_collectionStoragePrefix);
-
-      for (var i = 0; _myCollectionIds.ids.length > i; i++) {
-        if (_myCollectionIds.ids[i] == id) {
-          _myCollectionIds.ids.splice(i, 1);
-          break;
-        }
-      }
-
-      localStorageService.set(_collectionStoragePrefix, _myCollectionIds);
+      that.imageService.removeImageById(id);
     };
 
 
@@ -150,7 +129,7 @@
 
   };
 
-  controller.$inject = ['$log', 'api', 'localStorageService', 'appConfig'];
+  controller.$inject = ['$log', 'api', 'localStorageService', 'appConfig', 'image'];
 
 
   angular.module('inspinia')

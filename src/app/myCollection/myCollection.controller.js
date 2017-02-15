@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var controller = function ($log, api, localStorageService, appConfig) {
+  var controller = function ($log, api, localStorageService, appConfig, image) {
 
     $log.debug('myCollectionController');
 
@@ -11,26 +11,45 @@
 
     that.form = {};
 
+    that.images = [];
+
+    that.imageService = image;
+
     that.newFile = {
       file: null,
       source_image_url: null,
       tags: null
     };
 
-    that.inReuest = false;
-
-    var _myCollectionIds;
+    that.inRequest = false;
 
     that.appConfig = appConfig;
 
+    var _myCollectionIds;
+
     var _collectionStoragePrefix = appConfig.myCollectionStorage;
+
+    var _resetNewFileModel = function () {
+      that.newFile = {
+        file: null,
+        source_image_url: null,
+        tags: null
+      };
+
+      that.form.$setPristine();
+      that.form.$setUntouched();
+    };
 
     that.getMyCollection = function () {
       _myCollectionIds = localStorageService.get(_collectionStoragePrefix);
 
       if (_myCollectionIds) {
 
-        if (!_myCollectionIds.ids.length) return;
+        if (!_myCollectionIds.ids.length) {
+          that.images = [];
+          return
+        }
+
         var m = _myCollectionIds.ids.join(',');
 
         that.api.getMyImagesCollection(m).then(function (res) {
@@ -47,28 +66,15 @@
 
     that.removeImageFromMyCollection = function (image) {
       var id = image.id;
-
-      _myCollectionIds = localStorageService.get(_collectionStoragePrefix);
-
-      for (var i = 0; _myCollectionIds.ids.length > i; i++) {
-        if (_myCollectionIds.ids[i] == id) {
-          _myCollectionIds.ids.splice(i, 1);
-          break;
-        }
-      }
-
-      localStorageService.set(_collectionStoragePrefix, _myCollectionIds);
-
+      that.imageService.removeImageById(id);
       that.getMyCollection();
-
     };
 
     that.uploadFiles = function () {
 
-      // TODO 401 error -  waiting for approve my account from Giphy team
+      if (!that.form.$valid || (!that.newFile.file && !that.newFile.source_image_url)) return;
 
-      if (!that.form.$valid || !that.newFile.file) return;
-
+      that.inRequest = true;
       var tags = that.newFile.tags.map(function (elem) {
         return elem.text;
       }).join(",");
@@ -83,7 +89,15 @@
       };
 
       that.api.uploadFile(m).then(function (res) {
-        console.log(res)
+        that.inRequest = false;
+        var id = res.data.data.id;
+        try {
+          that.imageService.addImageId(id);
+          that.getMyCollection();
+          _resetNewFileModel();
+        } catch (e) {
+          $log.debug(e)
+        }
       }, function (error) {
         $log.debug(error)
       });
@@ -92,7 +106,7 @@
 
   };
 
-  controller.$inject = ['$log', 'api', 'localStorageService', 'appConfig'];
+  controller.$inject = ['$log', 'api', 'localStorageService', 'appConfig', 'image'];
 
 
   angular.module('inspinia')
