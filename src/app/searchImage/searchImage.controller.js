@@ -47,7 +47,7 @@
       that.api.getImageByName(m).then(function (res) {
         that.inRequest = false;
         try {
-          that.images = that.images.concat(res.data.data)
+          that.images = res.data.data;
         } catch (e) {
           $log.debug(e)
         }
