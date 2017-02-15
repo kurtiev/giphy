@@ -16,8 +16,8 @@
 
           if (event.target.className == 'close' || event.target.className == 'close-span') {
             scope.isShow = false;
-            $(el).find('.fullImageBox').addClass('hidden')
-          } else {
+            $(el).find('.fullImageBox').addClass('hidden');
+          } else if (event.target.className != 'glyphicon glyphicon-plus' && event.target.className != 'glyphicon glyphicon-remove text-danger') {
             scope.isShow = true;
             $(el).find('.fullImageBox').removeClass('hidden')
           }
