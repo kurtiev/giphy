@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -6,7 +6,14 @@
     .config(routerConfig);
 
   /** @ngInject */
-  function routerConfig($stateProvider, $urlRouterProvider) {
+  function routerConfig($stateProvider, $urlRouterProvider, $locationProvider, localStorageServiceProvider) {
+
+    $locationProvider.hashPrefix('!');
+
+    localStorageServiceProvider.setPrefix('giphyStorage');
+
+    $urlRouterProvider.otherwise("/index/search-image");
+
     $stateProvider
 
       .state('index', {
@@ -14,18 +21,20 @@
         url: "/index",
         templateUrl: "app/components/common/content.html"
       })
-      .state('index.main', {
-        url: "/main",
-        templateUrl: "app/main/main.html",
-        data: { pageTitle: 'Example view' }
+      .state('index.myCollection', {
+        url: "/my-collection",
+        templateUrl: "app/myCollection/myCollection.html",
+        controller: 'myCollectionController',
+        controllerAs: '$ctr',
+        data: {pageTitle: 'My Collection'}
       })
-      .state('index.minor', {
-        url: "/minor",
-        templateUrl: "app/minor/minor.html",
-        data: { pageTitle: 'Example view' }
-      });
-
-    $urlRouterProvider.otherwise('/index/main');
+      .state('index.searchImage', {
+        url: "/search-image",
+        templateUrl: "app/searchImage/searchImage.html",
+        controller: 'searchImageController',
+        controllerAs: '$ctr',
+        data: {pageTitle: 'Search Image'}
+      })
   }
 
 })();
