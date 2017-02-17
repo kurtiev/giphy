@@ -40,14 +40,7 @@
           <div class="row">
             <div class="col-xs-12">
               <div>
-                <full-image ng-repeat="img in $ctr.images" image="img.images.original.url">
-                  <img src="" alt="" class="img-thumbnail image-thumb" ng-src="{{img.images.preview_gif.url || img.images.original.url}}">
-
-                  <button type="button" class="btn btn-link add-icon" ng-click="$ctr.removeImageFromMyCollection(img)">
-                    <span class="glyphicon glyphicon-remove text-danger"></span>
-                  </button>
-
-                </full-image>
+                <full-image ng-repeat="img in $ctr.images" image="img"></full-image>
               </div>
               <h4 class="text-center" ng-show="!$ctr.images.length">No images yet</h4>
             </div>

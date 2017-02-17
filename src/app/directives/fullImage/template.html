@@ -1,4 +1,18 @@
-<div class="fullImageBox">
-  <img src="" alt="" ng-src="{{fullImage}}">
+<img src="" alt="" ng-click="isShow = true" class="img-thumbnail image-thumb" ng-src="{{image.images.preview_gif.url}}">
+
+<button type="button" class="btn btn-link add-icon" ng-click="addImageToMyCollection(image)" ng-show="!existedImageFilter(image)">
+  <span class="glyphicon glyphicon-plus"></span>
+</button>
+
+<button type="button" class="btn btn-link add-icon" ng-click="removeImageFromMyCollection(image)" ng-show="existedImageFilter(image)">
+  <span class="glyphicon glyphicon-remove text-danger"></span>
+</button>
+
+<div class="fullImageBox" ng-show="isShow">
+  <div class="fullImageBoxContainer">
+    <button type="button" class="close" ng-click="isShow = false">
+      <span class="close-span">&times;</span>
+    </button>
+    <img src="" class="image" alt="" ng-src="{{image.images.original.url}}">
+  </div>
 </div>
-ololo

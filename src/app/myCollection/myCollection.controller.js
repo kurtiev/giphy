@@ -67,12 +67,6 @@
 
     that.getMyCollection();
 
-    that.removeImageFromMyCollection = function (image) {
-      var id = image.id;
-      that.imageService.removeImageById(id);
-      that.getMyCollection();
-    };
-
     that.uploadFiles = function () {
 
       if (!that.form.$valid || (!that.newFile.file && !that.newFile.source_image_url)) return;

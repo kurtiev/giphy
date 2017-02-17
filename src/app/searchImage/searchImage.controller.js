@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var controller = function ($log, api, localStorageService, appConfig, image, auth, $state) {
+  var controller = function ($log, api, localStorageService, appConfig, auth, $state) {
 
     if (!auth.authentication.isLogged) {
       $state.go('login');
@@ -19,13 +19,6 @@
     that.images = [];
 
     that.inRequest = false;
-
-    that.imageService = image;
-
-    var _collectionStoragePrefix = appConfig.myCollectionStorage;
-
-    var _myCollectionIds = localStorageService.get(_collectionStoragePrefix);
-
 
     that.searchModel = {
       q: null,
@@ -59,50 +52,6 @@
       });
     };
 
-
-    /**
-     * Adding image ID into localStorage
-     * @param image
-     */
-    that.addImageToMyCollection = function (image) {
-
-      var id = image.id;
-      that.imageService.addImageId(id);
-
-    };
-
-    /**
-     * Delete image from localStorage
-     * @param image
-     */
-    that.removeImageFromMyCollection = function (image) {
-
-      var id = image.id;
-
-      that.imageService.removeImageById(id);
-    };
-
-
-    /**
-     * Function for ng-show button, if image already exist in our localStorage
-     * @param image
-     * @returns {boolean}
-     */
-    that.existedImageFilter = function (image) {
-      var id = image.id;
-
-      _myCollectionIds = localStorageService.get(_collectionStoragePrefix) || {ids: []};
-
-      for (var i = 0; _myCollectionIds.ids.length > i; i++) {
-        if (_myCollectionIds.ids[i] == id) {
-          return true
-        }
-      }
-
-      return false;
-
-    };
-
     /**
      * Infinite scroll, pagination
      */
@@ -131,10 +80,9 @@
 
     };
 
-
   };
 
-  controller.$inject = ['$log', 'api', 'localStorageService', 'appConfig', 'image', 'auth', '$state'];
+  controller.$inject = ['$log', 'api', 'localStorageService', 'appConfig', 'auth', '$state'];
 
 
   angular.module('inspinia')

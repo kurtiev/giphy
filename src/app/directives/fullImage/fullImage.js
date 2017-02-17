@@ -1,28 +1,60 @@
 (function () {
   'use strict';
 
-  var fullImage = function () {
+  var fullImage = function (imageService, localStorageService, appConfig) {
     return {
+      templateUrl: 'app/directives/fullImage/template.html',
       restrict: 'E',
       link: function (scope, el, attr) {
 
         scope.isShow = false;
 
-        $(el).append('<div class="fullImageBox hidden"><div class="fullImageBoxContainer">' +
-          '<button type="button" class="close"><span class="close-span">&times;</span></button>' +
-          '<img src="' + scope.image + '" class="image" alt="" ng-click="showHide()"></div></div>');
+        var _myCollectionIds = localStorageService.get(_collectionStoragePrefix);
+        var _collectionStoragePrefix = appConfig.myCollectionStorage;
 
-        $(el).click(function (event) {
 
-          if (event.target.className == 'close' || event.target.className == 'close-span') {
-            scope.isShow = false;
-            $(el).find('.fullImageBox').addClass('hidden');
-          } else if (event.target.className != 'glyphicon glyphicon-plus' && event.target.className != 'glyphicon glyphicon-remove text-danger') {
-            scope.isShow = true;
-            $(el).find('.fullImageBox').removeClass('hidden')
+        /**
+         * Adding image ID into localStorage
+         * @param image
+         */
+        scope.addImageToMyCollection = function (image) {
+
+          var id = image.id;
+          imageService.addImageId(id);
+
+        };
+
+        /**
+         * Delete image from localStorage
+         * @param image
+         */
+        scope.removeImageFromMyCollection = function (image) {
+
+          var id = image.id;
+
+          imageService.removeImageById(id);
+        };
+
+
+        /**
+         * Function for ng-show button, if image already exist in our localStorage
+         * @param image
+         * @returns {boolean}
+         */
+        scope.existedImageFilter = function (image) {
+          var id = image.id;
+
+          _myCollectionIds = localStorageService.get(_collectionStoragePrefix) || {ids: []};
+
+          for (var i = 0; _myCollectionIds.ids.length > i; i++) {
+            if (_myCollectionIds.ids[i] == id) {
+              return true
+            }
           }
 
-        })
+          return false;
+
+        };
 
       },
       scope: {
@@ -30,6 +62,8 @@
       }
     }
   };
+
+  fullImage.$inject = ['image', 'localStorageService', 'appConfig'];
 
   angular.module('inspinia').directive('fullImage', fullImage);
 
