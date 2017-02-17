@@ -19,7 +19,7 @@
           </form>
           <div class="row">
             <div class="col-xs-12">
-              <div infinite-scroll="$ctr.infiniteScroll()" infinite-scroll-disabled='$ctr.inRequest' infinite-scroll-use-document-bottom="true" infinite-scroll-distance='1'>
+              <div infinite-scroll="$ctr.infiniteScroll($ctr.form)" infinite-scroll-disabled='$ctr.inRequest' infinite-scroll-use-document-bottom="true" infinite-scroll-distance='1'>
                 <full-image ng-repeat="img in $ctr.images" image="img"></full-image>
               </div>
             </div>

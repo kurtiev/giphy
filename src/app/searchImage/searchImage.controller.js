@@ -55,9 +55,9 @@
     /**
      * Infinite scroll, pagination
      */
-    that.infiniteScroll = function () {
+    that.infiniteScroll = function (form) {
 
-      if (that.inRequest || !that.form.$valid) return;
+      if (that.inRequest || !form.$valid) return;
 
       that.inRequest = true;
 
